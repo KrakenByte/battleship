@@ -1,0 +1,27 @@
+{
+  "name": "battleship",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/KrakenByte/battleship#readme",
+  "bugs": {
+    "url": "https://github.com/KrakenByte/battleship/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KrakenByte/battleship.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "main": "node src/index.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
+    "babel-jest": "^30.2.0",
+    "jest": "^30.2.0"
+  }
+}
