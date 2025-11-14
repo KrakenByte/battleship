@@ -1,6 +1,7 @@
-export class Ship {
+class Ship {
   #hits;
   length;
+  coords;
   constructor(length) {
     if (length <= 0) {
         throw new RangeError("Ship length must be greater than 0");
@@ -20,3 +21,5 @@ export class Ship {
     return this.hits >= this.length;
   }
 }
+
+module.exports = Ship;

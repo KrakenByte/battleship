@@ -1,0 +1,117 @@
+const Ship = require("./ship.js");
+
+class Cell {
+  state;
+  owner;
+  constructor() {
+    this.owner = null;   // either a Ship or null
+    this.state = "empty"; // "empty" | "occupied" | "hit" | "miss"
+  }
+}
+
+class Gameboard {
+  shipCount;
+  ships;
+  grid;
+
+  constructor() {
+    this.shipCount = 0;
+    this.ships = [];
+    this.grid = Array.from({ length: 10 }, () =>
+      Array.from({ length: 10 }, () => new Cell())
+    );
+  }
+
+  placeShip(ship, x, y) {
+    if (!this.#checkValidCoord(x, y)) {
+      throw new RangeError(`(${x}, ${y}) : coordinates out of bounds`);
+    }
+
+    const cell = this.grid[x][y];
+    cell.owner = ship;
+    cell.state = "occupied";
+
+    ship.coords = [x, y];
+    this.ships.push(ship);
+    this.shipCount++;
+  }
+
+  findShipAt(x, y) {
+    if (!this.#checkValidCoord(x, y)) return -1;
+    const cell = this.grid[x][y];
+    return cell.owner ?? -1;
+  }
+
+  receiveAttack(x, y) {
+    if (!this.#checkValidCoord(x, y)) return;
+
+    const cell = this.grid[x][y];
+    const owner = cell.owner;
+
+    if (owner === null) {
+      cell.state = 'miss';
+      return;
+    }
+
+    if (!(owner instanceof Ship)) {
+      throw new TypeError('receiveAttack expects a Ship instance at the target cell');
+    }
+
+    if (owner.isSunk()) {
+      cell.state = 'miss';
+      return;
+    }
+
+    owner.hit();
+    cell.state = 'hit';
+  }
+
+  printBoard() {
+    let output = "♯  0 1 2 3 4 5 6 7 8 9\n";
+
+    for (let x = 0; x < 10; x++) {
+      let row = `${x}  `;
+
+      for (let y = 0; y < 10; y++) {
+        const cell = this.grid[x][y];
+
+        let symbol;
+        switch (cell.state) {
+          case "empty":
+            symbol = ".";
+            break;
+          case "occupied":
+            symbol = "⛴";
+            break;
+          case "hit":
+            symbol = "♰";
+            break;
+          case "miss":
+          symbol = "✘";
+            break;
+          default:
+            symbol = "?";
+        }
+
+        row += symbol + " ";
+      }
+
+      output += row + "\n";
+    }
+
+    console.log(output);
+  }
+
+  #checkValidCoord(x, y) {
+    return (
+      Number.isInteger(x) &&
+      Number.isInteger(y) &&
+      x >= 0 &&
+      x < this.grid.length &&
+      y >= 0 &&
+      y < this.grid[0].length
+    );
+  }
+}
+
+module.exports = { Gameboard, Cell }
