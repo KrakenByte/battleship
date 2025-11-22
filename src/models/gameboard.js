@@ -1,4 +1,4 @@
-const Ship = require("./ship.js");
+const Ship = require("../ship.js");
 
 class Cell {
   state;
@@ -22,16 +22,28 @@ class Gameboard {
     );
   }
 
-  placeShip(ship, x, y) {
+  placeShip(ship, x, y, direction = "horizontal") {
     if (!this.#checkValidCoord(x, y)) {
       throw new RangeError(`(${x}, ${y}) : coordinates out of bounds`);
     }
 
-    const cell = this.grid[x][y];
-    cell.owner = ship;
-    cell.state = "occupied";
+    if (!this.#checkValidPlacement(x, y, ship.length, direction)) {
+      throw new Error(`Ship of length ${ship.length} does not fit at (${x}, ${y}) in direction ${direction}`);
+    }
 
-    ship.coords = [x, y];
+    if (this.#checkOverlap(x, y, ship.length, direction)) {
+      throw new Error(`Ship overlaps another ship at (${x}, ${y})`);
+    }
+
+    for (let i = 0; i < ship.length; i++) {
+      const cx = direction === "vertical" ? x + i : x;
+      const cy = direction === "horizontal" ? y + i : y;
+
+      const cell = this.grid[cx][cy];
+      cell.owner = ship;
+      cell.state = "occupied";
+    }
+
     this.ships.push(ship);
     this.shipCount++;
   }
@@ -87,7 +99,7 @@ class Gameboard {
             symbol = "♰";
             break;
           case "miss":
-          symbol = "✘";
+            symbol = "✘";
             break;
           default:
             symbol = "?";
@@ -98,8 +110,11 @@ class Gameboard {
 
       output += row + "\n";
     }
-
     console.log(output);
+  }
+
+  checkIfAllShipsAreSunk() {
+    return this.ships.every(ship => ship.isSunk());
   }
 
   #checkValidCoord(x, y) {
@@ -111,6 +126,27 @@ class Gameboard {
       y >= 0 &&
       y < this.grid[0].length
     );
+  }
+
+  #checkValidPlacement(x, y, length, direction) {
+    if (direction === "horizontal") {
+      return y + length <= 10;
+    } else if (direction === "vertical") {
+      return x + length <= 10;
+    }
+    return false;
+  }
+
+  #checkOverlap(x, y, length, direction) {
+    for (let i = 0; i < length; i++) {
+      const cx = direction === "vertical" ? x + i : x;
+      const cy = direction === "horizontal" ? y + i : y;
+
+      if (this.grid[cx][cy].owner !== null) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 
