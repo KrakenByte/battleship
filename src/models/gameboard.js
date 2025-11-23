@@ -1,4 +1,4 @@
-const Ship = require("../ship.js");
+import { Ship } from "./ship.js";
 
 class Cell {
   state;
@@ -150,4 +150,4 @@ class Gameboard {
   }
 }
 
-module.exports = { Gameboard, Cell }
+export { Gameboard, Cell };

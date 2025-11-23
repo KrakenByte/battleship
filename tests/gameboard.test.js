@@ -1,5 +1,5 @@
 import { Gameboard, Cell } from "../src/models/gameboard.js";
-import Ship from "../src/models/ship.js";
+import { Ship } from "../src/models/ship.js";
 
 describe("Gameboard", () => {
   let board;

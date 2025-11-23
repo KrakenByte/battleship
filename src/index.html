@@ -1,28 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Battleship</title>
-</head>
-<body>
-    <div class="container">
-        <h1>Battleship Game</h1>
+  </head>
+  <body>
+    <h1>Battleship Game</h1>
+    <div class="game">
+      <div class="container">
+        <div id="controls">
+          <div id="controls-left"></div>
+          <div id="controls-right">
+            <button id="regen-player" type="button">
+              Shuffle Player Ships
+            </button>
+          </div>
+        </div>
+
         <div id="gameboards">
-            <div id="human-board" class="board">
-                <h2>You</h2>
-                <!-- Player gameboard will be rendered here -->
-            </div>
-            <div id="computer-board" class="board">
-                <h2>Computer</h2>
-                <!-- Computer gameboard will be rendered here -->
-            </div>
+          <div id="player-board" class="board">
+            <h2>You</h2>
+            <div class="grid" id="player-grid" aria-label="Player board"></div>
+          </div>
+          <div id="computer-board" class="board">
+            <h2>Computer</h2>
+            <div
+              class="grid"
+              id="computer-grid"
+              aria-label="Computer board"
+            ></div>
+          </div>
         </div>
+        <script src="/main.js"></script>
         <div id="status">
-            <p id="turn-indicator">Current Turn: Human</p>
-            <p id="game-message"></p>
+          <p id="turn-indicator">Current Turn: Human</p>
+          <p id="game-message"></p>
         </div>
+      </div>
     </div>
-</body>
+  </body>
 </html>

@@ -1,4 +1,4 @@
-const Ship = require("../src/ship.js");
+import { Ship } from "../src/models/ship.js";
 
 describe('Ship class', () => {
   test('creates a ship with the given length', () => {
